@@ -17,5 +17,6 @@ How to use:
 	
 	|- osb-builder (this project)
 	
+- Update build.properties with the configuration of your environment
 - CD into the directory of the builder project
 - Run Ant
