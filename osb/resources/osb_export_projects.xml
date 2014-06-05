@@ -1,0 +1,16 @@
+<configjarSettings xmlns="http://www.bea.com/alsb/tools/configjar/config">
+    <source>
+        <project dir="D:\Odebrecht\Fontes\odebrecht-oec\ORAPData"/>
+        <system  dir="D:\Odebrecht\Fontes\odebrecht-oec\ORConfigAPData"/>
+    </source>
+
+    <configjar jar="D:\Odebrecht\Fontes\odebrecht-oec\osb\build\sbconfig.jar">
+         
+         <resourceLevel>
+            <resources />
+<!--                 <exclude name="**/*.xml"/> -->
+<!--             </resources> -->
+        </resourceLevel>
+    </configjar>
+    
+</configjarSettings>

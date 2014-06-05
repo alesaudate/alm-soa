@@ -1,0 +1,55 @@
+<project name="OSBBuild" default="deploy" basedir=".">
+
+	<!-- set global properties for this build -->
+	<property name="src" location="src" />
+	<property name="build" location="build" />
+	<property name="dist" location="dist" />
+	<property name="templateDir" location="templates" />
+	<property name="resources" location="resources" />
+	<property file="build.properties" />
+	<property name="osb.project.dir" location="../${project.name}" />
+	<property name="osb.config.dir" location="../${config.name}" />
+
+	<target name="init">
+		<tstamp />
+		<delete dir="${build}" />
+		<mkdir dir="${build}" />
+	</target>
+
+	<target name="resources">
+		<delete dir="${resources}" />
+		<mkdir dir="${resources}" />
+		<copy todir="${resources}">
+			<filterchain>
+				<expandproperties />
+			</filterchain>
+			<fileset dir="${templateDir}" />
+		</copy>
+	</target>
+
+	<target name="compile" depends="init, resources" description="compile the source ">
+		<java classpath="${middleware.home}\modules\features\weblogic.server.modules_10.3.6.0.jar;${weblogic.home}\server/lib/weblogic.jar;${middleware.home}\oracle_common\modules\oracle.http_client_11.1.1.jar;${middleware.home}\oracle_common\modules\oracle.xdk_11.1.0\xmlparserv2.jar;${middleware.home}\oracle_common\modules\oracle.webservices_11.1.1\orawsdl.jar;${middleware.home}\oracle_common\modules\oracle.wsm.common_11.1.1\wsm-dependencies.jar;${osb.home}\modules\features\osb.server.modules_11.1.1.7.jar;${osb.home}\soa\modules\oracle.soa.common.adapters_11.1.1\oracle.soa.common.adapters.jar;${osb.home}\lib\external\log4j_1.2.8.jar;${osb.home}\lib\alsb.jar;${osb.home}\tools\configjar\configjar.jar;${osb.home}\tools\configjar\L10N" classname="com.bea.alsb.tools.configjar.ConfigJar" fork="true" logerror="on">
+			<jvmarg value="-Dosb.home=${osb.home}" />
+			<jvmarg value="-Dweblogic.home=${weblogic.home}" />
+			<arg value="-settingsfile" />
+			<arg value="${resources}\osb_export_projects.xml" />
+		</java>
+	</target>
+
+
+	<target name="deploy" depends="compile" description="generate the distribution">
+		<java classpath="${weblogic.home}\server\lib\weblogic.jar;${middleware.home}\modules\com.bea.core.xml.xmlbeans_2.2.0.0_2-5-1.jar;${osb.home}\lib/alsb.jar;${osb.home}\lib\sb-kernel-wls.jar;${osb.home}\lib\sb-kernel-impl.jar;${osb.home}\lib\sb-kernel-api.jar;${osb.home}\modules\com.bea.common.configfwk_1.7.0.0.jar" classname="weblogic.WLST" fork="true" logerror="on">
+			<arg value="${resources}\import.py" />
+			<arg value="${wls.username}" />
+			<arg value="${wls.password}" />
+			<arg value="${wls.server.address}" />
+			<arg value="${project.name}" />
+			<arg value="${build}\sbconfig.jar" />
+			<arg value="${resources}\all_plan.xml" />
+		</java>
+	</target>
+
+	<target name="clean" description="clean up">
+		<delete dir="${build}" />
+	</target>
+</project>
