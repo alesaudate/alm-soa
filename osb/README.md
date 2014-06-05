@@ -9,7 +9,13 @@ Prerequisites:
 How to use:
 
 - Place these files on a project in the same level as your OSB Project and Config. For example:
+	
+
 	|- OSBConfig
+
 	|- OSBProject
+	
 	|- osb-builder (this project)
 	
+- CD into the directory of the builder project
+- Run Ant
